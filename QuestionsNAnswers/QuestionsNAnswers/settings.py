@@ -6,6 +6,8 @@ TEMPLATE_DEBUG = DEBUG
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 MANAGERS = ADMINS
 
@@ -57,40 +59,43 @@ MEDIA_ROOT = ''
 # Examples: "http://example.com/media/", "http://media.example.com/"
 MEDIA_URL = ''
 
-# Absolute path to the directory static files should be collected to.
-# Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''
 
-# URL prefix for static files.
-# Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
+STATIC_CDN_URL = '/static/'
+#STATIC_CDN_URL = 'http://d2yoed1luvn2cr.cloudfront.net/static/'
+COMPRESS_ROOT = os.path.join(BASE_DIR, 'static')
 
-# Additional locations of static files
+COMPRESS_URL = STATIC_URL
+
+COMPRESS_OUTPUT_DIR = 'compressed'
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static/compressed'),
 )
-
-# List of finder classes that know how to find static files in
-# various locations.
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
-)
-
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = 'u7a6*o$!d=ikvfj@&r-8qfh&!jpw1odm8btz69^ak^1=csbp#%'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    #     'django.template.loaders.eggs.Loader',
 )
+
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, "templates"),
+)
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'compressor.finders.CompressorFinder',
+)
+
+# Make this unique, and don't share it with anybody.
+SECRET_KEY = 'u7a6*o$!d=ikvfj@&r-8qfh&!jpw1odm8btz69^ak^1=csbp#%'
+
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
